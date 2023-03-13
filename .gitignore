@@ -1,0 +1,22 @@
+#compiled sources#
+GPATH
+GRTAGS
+GTAGS
+#FOLDERS#
+.vscode/*
+obj/*
+#files#
+*.png
+*.tiff
+*.qbs
+*.mp4
+*.mp3
+*.so
+*.svg
+*.exr
+Decoherence
+of_vscode.sh
+config.make
+Makefile
+haptics
+#hope it cleans
