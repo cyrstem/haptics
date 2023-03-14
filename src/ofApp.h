@@ -25,4 +25,12 @@ private:
 	ofxImGui::Gui gui;
 	bool mouseOverGui;
 	bool guiVisible;
+	//params
+	ofParameterGroup param{"Params"};
+
+	// save data
+	string XML_path = "settings.xml";
+	void XML_load_app(ofParameterGroup &g, string path);
+	void XML_save_app(ofParameterGroup &g, string path);
+	// end save data
 };
