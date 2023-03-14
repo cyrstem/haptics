@@ -19,13 +19,18 @@ public:
 	// enviroment
 	ofCubeMap cubeMap;
 	int cubeMapMode = 3;
+	ofEasyCam cam;
+	//thing
+	ofSpherePrimitive sphere;
+	ofMaterial mat;
+	ofShader shader;
 
 private:
 	bool imGui();
 	ofxImGui::Gui gui;
 	bool mouseOverGui;
 	bool guiVisible;
-	//params
+	// params
 	ofParameterGroup param{"Params"};
 
 	// save data
