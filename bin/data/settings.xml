@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Params>
+	<freq_X>76.581</freq_X>
+	<freq_Y>8</freq_Y>
+	<freq_Z>7</freq_Z>
+	<Depth_X>0.889</Depth_X>
+	<Depth_Y>0.12</Depth_Y>
+	<Depth_Z>0.18</Depth_Z>
+	<Reflectance>1.873</Reflectance>
+	<Roghtness>0.513</Roghtness>
+	<Metallic>0.94</Metallic>
+</Params>
