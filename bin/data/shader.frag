@@ -5,7 +5,7 @@ precision highp float;
 
 out vec4 outputColor;
 uniform float time;
-uniform sampler2DRect fboTex;
+uniform sampler2D fboTex;
 in vec4 verts;
 in vec2 texCoordVarying;
 
@@ -32,7 +32,7 @@ void main(){
     float diffuse1 = pow(max(0., dot(normal, spotLight1)), 2.);
 
     /* Output the color */
-    outputColor = vec4(vec3(diffuse1 + 0.0625),1.0);
+    outputColor = vec4(vec3(diffuse1+ 0.0625*baseColor),baseColor);
     
 
 }

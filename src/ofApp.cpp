@@ -24,6 +24,10 @@ void ofApp::setup()
     // shader
     shader.load("shader");
     shader2.load("s");
+   // main.load("main");
+    
+    mat.setCustomUniform1f("iElapsedTime", 1.0);
+    mat.setPBR(true);
 
     ofFboSettings p;
     p.width = 256;
@@ -33,7 +37,7 @@ void ofApp::setup()
     p.minFilter = GL_LINEAR;
     p.numSamples = 3;
     p.useDepth = true;
-    p.useStencil = true;
+    // p.useStencil = true;
     p.wrapModeHorizontal = GL_CLAMP_TO_EDGE;
     p.wrapModeVertical = GL_CLAMP_TO_EDGE;
 
@@ -79,21 +83,24 @@ void ofApp::draw()
 
     ofEnableDepthTest();
     cam.begin();
-    // shader.begin();
-    // shader.setUniform1f("time", ofGetElapsedTimef());
-    // shader.setUniform3f("freq", xFreq, yFreq, zFreq);
-    // shader.setUniformTexture("fboTex", fbo.getTexture(0), 0);
-    // shader.setUniform3f("depth", xDepth, yDepth, zDepth);
-    mat.begin();
-    mat.setRoughness(roughtness);
-    mat.setReflectance(reflect);
-    mat.setMetallic(metallic);
-    mat.setDiffuseColor(ofFloatColor(0.7, 0.16, 0.11, 1.0));
-    mat.setDiffuseColor(ofFloatColor(0.0, 6.0));
+    shader.begin();
+    shader.setUniform1f("time", ofGetElapsedTimef());
+    shader.setUniform3f("freq", xFreq, yFreq, zFreq);
+    shader.setUniformTexture("fboTex", fbo.getTexture(0), 0);
+    shader.setUniform3f("depth", xDepth, yDepth, zDepth);
+   // mat.setCustomUniform1f("iElapsedTime", ofGetElapsedTimef());
+
+    // mat.begin();
+    // mat.setRoughness(roughtness);
+    // mat.setReflectance(reflect);
+    // mat.setMetallic(metallic);
+    // mat.setDiffuseColor(ofFloatColor(1., 1.0, 1.0, 1.0));
+    // mat.setDiffuseColor(ofFloatColor(0.0, 6.0));
+ 
 
     sphere.draw();
 
-    mat.end();
+   // mat.end();
     shader.end();
     cam.end();
     ofDisableDepthTest();

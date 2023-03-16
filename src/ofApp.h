@@ -26,8 +26,9 @@ public:
 	ofSpherePrimitive sphere;
 	ofMaterial mat;
 	//ofShader shader,shader2;
-	ofxAutoReloadedShader shader,shader2;
+	ofxAutoReloadedShader shader,shader2,main;
 	ofFbo fbo;
+	//FboPingPong fbo;
 
 
 private:
