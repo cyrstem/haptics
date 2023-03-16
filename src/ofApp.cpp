@@ -8,14 +8,18 @@ void ofApp::setup()
     ofSetBackgroundColor(25);
     ofSetWindowTitle("--HAPTICS--");
     ofSetFrameRate(60.0f);
-    cam.setNearClip(10);
-    cam.setPosition(0, 45, 100);
+    // cam.setNearClip(10);
+    // cam.setPosition(0, 45, 100);
+    
 
     cubeMap.load("loc00184-22-8k.exr", 512, true);
 
-    // thing
-    sphere.set(40, 24);
-    cam.lookAt(sphere.getPosition());
+    // Thing---------------------------------
+    // sphere.set(40, 24);
+    // cam.lookAt(mesh.getPosition());
+    mesh.setMode(OF_PRIMITIVE_LINES);
+    ico.set(1, 6);
+    mesh = ico.getMesh();
 
     this->gui.setup();
     // gui.setTheme(new MyTheme());
@@ -23,11 +27,6 @@ void ofApp::setup()
 
     // shader
     shader.load("shader");
-    shader2.load("s");
-   // main.load("main");
-    
-    mat.setCustomUniform1f("iElapsedTime", 1.0);
-    mat.setPBR(true);
 
     ofFboSettings p;
     p.width = 256;
@@ -62,6 +61,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+      cam.setPosition(0, 0, zoom);
     fbo.begin();
     ofClear(255, 255, 255, 0);
     fbo.end();
@@ -70,16 +70,6 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    // cubeMap.drawPrefilteredCube(0.00f);
-    // cubeMap.drawIrradiance();
-    fbo.begin();
-    shader2.begin();
-    shader2.setUniform1f("u_time",ofGetElapsedTimef());
-    shader2.setUniform2f("u_resolution", 400,400);
-    ofDrawRectangle(0, 0, 400, 400);
-    shader2.end();
-    fbo.end();
-    fbo.draw(0, 0);
 
     ofEnableDepthTest();
     cam.begin();
@@ -88,19 +78,11 @@ void ofApp::draw()
     shader.setUniform3f("freq", xFreq, yFreq, zFreq);
     shader.setUniformTexture("fboTex", fbo.getTexture(0), 0);
     shader.setUniform3f("depth", xDepth, yDepth, zDepth);
-   // mat.setCustomUniform1f("iElapsedTime", ofGetElapsedTimef());
 
-    // mat.begin();
-    // mat.setRoughness(roughtness);
-    // mat.setReflectance(reflect);
-    // mat.setMetallic(metallic);
-    // mat.setDiffuseColor(ofFloatColor(1., 1.0, 1.0, 1.0));
-    // mat.setDiffuseColor(ofFloatColor(0.0, 6.0));
- 
+    // sphere.draw();
+    //   ofScale(2,2,2);
+        mesh.draw();
 
-    sphere.draw();
-
-   // mat.end();
     shader.end();
     cam.end();
     ofDisableDepthTest();
@@ -110,14 +92,15 @@ void ofApp::draw()
     {
         this->mouseOverGui = this->imGui();
     }
-    if (this->mouseOverGui)
-    {
-        this->cam.disableMouseInput();
-    }
-    else
-    {
-        this->cam.enableMouseInput();
-    }
+    //not neededd on OFCAM
+    // if (this->mouseOverGui)
+    // {
+    //     this->cam.disableMouseInput();
+    // }
+    // else
+    // {
+    //     this->cam.enableMouseInput();
+    // }
 }
 
 //--------------------------------------------------------------
@@ -134,7 +117,7 @@ void ofApp::keyPressed(int key)
         ofToggleFullscreen();
         break;
     case 's':
-        XML_save_app(param,XML_path);
+        XML_save_app(param, XML_path);
     }
 }
 
@@ -169,7 +152,7 @@ bool ofApp::imGui()
         {
             if (ofxImGui::BeginTree(this->cameraOps, mainSettings))
             {
-                // ofxImGui::AddParameter(this->radius);
+                ofxImGui::AddParameter(this->zoom);
                 // ofxImGui::AddParameter(this->distance);
                 // ofxImGui::AddParameter(this->fullLenghtOrbit);
                 ofxImGui::EndTree(mainSettings);

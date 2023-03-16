@@ -11,7 +11,7 @@ public:
 	void setup();
 	void update();
 	void draw();
-	
+
 	void keyPressed(int key);
 	void mouseMoved(int x, int y);
 	void windowResized(int w, int h);
@@ -21,15 +21,16 @@ public:
 	// enviroment
 	ofCubeMap cubeMap;
 	int cubeMapMode = 3;
-	ofEasyCam cam;
-	// thing
-	ofSpherePrimitive sphere;
-	ofMaterial mat;
-	//ofShader shader,shader2;
-	ofxAutoReloadedShader shader,shader2,main;
-	ofFbo fbo;
-	//FboPingPong fbo;
+	glm::vec3 center= glm::vec3(0,0,0);
+	ofCamera cam;
+	// THING
+	ofMesh mesh;
+	ofIcoSpherePrimitive ico;
+	// ofSpherePrimitive sphere;
+	// ofMaterial mat;
 
+	ofxAutoReloadedShader shader;
+	ofFbo fbo;
 
 private:
 	bool imGui();
@@ -39,6 +40,7 @@ private:
 	// params
 	ofParameterGroup param{"Params"};
 	ofParameterGroup cameraOps{"Camera-> CTR"};
+	ofParameter<float> zoom{"zoom", 7.6, -10.0, 100};
 
 	ofParameterGroup shaderOps{"Shader-> CTR"};
 	ofParameter<float> xFreq{"freq X", 10, 0, 128};
@@ -54,8 +56,6 @@ private:
 
 	ofParameterGroup colors{"ColorMaterial-> CTR"};
 	ImVec4 diff_val = ImVec4(0.07f, 0.16f, 0.11f, 1.f);
-
-
 
 	// save data
 	string XML_path = "settings.xml";

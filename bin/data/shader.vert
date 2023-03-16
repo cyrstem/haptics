@@ -18,16 +18,16 @@ uniform vec3 depth;
 void main()
 {
     /* Store position */
-    vec4 pos = position;
-    texcoordVarying =vec2(texcoord.x,texcoord.y);
+     vec4 pos = position;
+    // texcoordVarying =vec2(texcoord.x,texcoord.y);
 
     /* Mess with the vertices */
-    pos.x += (cos(pos.y * freq.x + time) * depth.x);
-    pos.y += (sin(pos.z * freq.y + time) * depth.y);
-    pos.z += (sin(pos.x * freq.z + time) * depth.z);
+    // pos.x += (cos(pos.y * freq.x + time) * depth.x);
+    // pos.y += (sin(pos.z * freq.y + time) * depth.y);
+    // pos.z += (sin(pos.x * freq.z + time) * depth.z);
 
     /* Output the new position */
-    gl_Position = modelViewProjectionMatrix * pos;
+    gl_Position = modelViewProjectionMatrix * position;
 
     /* Send some values to the fragment shader */
     verts = pos;
