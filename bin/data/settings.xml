@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <Params>
-	<zoom>7.727</zoom>
-	<speed>0.1</speed>
+	<zoom>16.667</zoom>
+	<speed>0.798</speed>
 	<Perlin />
-	<decay>0.35</decay>
-	<waves>2</waves>
-	<eqColor>15.151</eqColor>
+	<decay>0.212</decay>
+	<waves>3.03</waves>
+	<eqColor>21.717</eqColor>
 	<Red>0.373</Red>
 	<Green>0.202</Green>
-	<Blue>0.081</Blue>
+	<Blue>0</Blue>
 </Params>

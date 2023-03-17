@@ -71,7 +71,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    
+
     ofEnableDepthTest();
     cam.begin();
     shader.begin();
@@ -127,13 +127,16 @@ void ofApp::keyPressed(int key)
         break;
     case 's':
         XML_save_app(param, XML_path);
+        break;
+    case 'l':
+        XML_load_app(param, XML_path);
+        break;
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y)
 {
-
 }
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
@@ -171,8 +174,8 @@ bool ofApp::imGui()
                 ofxImGui::AddParameter(this->speed);
                 ofxImGui::AddParameter(this->decay);
                 ofxImGui::AddParameter(this->waves);
-                 ofxImGui::AddParameter(this->perlins);
-                ImGui::Checkbox("Fragment",&fragment);
+                ofxImGui::AddParameter(this->perlins);
+                ImGui::Checkbox("Fragment", &fragment);
                 ImGui::Separator();
 
                 ofxImGui::EndTree(mainSettings);
