@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <Params>
-	<freq_X>85.333</freq_X>
-	<freq_Y>0</freq_Y>
-	<freq_Z>0</freq_Z>
-	<Depth_X>0.632</Depth_X>
-	<Depth_Y>0.376</Depth_Y>
-	<Depth_Z>1.248</Depth_Z>
-	<Reflectance>0.906</Reflectance>
-	<Roghtness>0.427</Roghtness>
-	<Metallic>0.821</Metallic>
+	<zoom>18.333</zoom>
+	<speed>0.1</speed>
+	<Perlin />
+	<decay>0.35</decay>
+	<waves>2</waves>
+	<eqColor>15.151</eqColor>
+	<Red>0.373</Red>
+	<Green>0.202</Green>
+	<Blue>0.081</Blue>
 </Params>
