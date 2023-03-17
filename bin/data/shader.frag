@@ -3,7 +3,6 @@ in vec4 verts;
 out vec4 outputColor;
 in float qnoise;
 uniform float time;
-uniform bool redHell;
 uniform float r_color;
 uniform float g_color;
 uniform float b_color;

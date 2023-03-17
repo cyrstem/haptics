@@ -71,25 +71,24 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-
+    
     ofEnableDepthTest();
     cam.begin();
     shader.begin();
-    shader.setUniform1f("perlins", 1.0);
+    shader.setUniform1f("perlins", perlins);
     shader.setUniform1f("time", ofGetElapsedTimef());
     shader.setUniform1f("pointscale", 10.0);
     shader.setUniform1f("decay", decay);
     shader.setUniform1f("complex", 0.0);
     shader.setUniform1f("waves", waves);
     shader.setUniform1f("eqcolor", eqcolor);
-    shader.setUniform1i("fragment", false);
+    shader.setUniform1i("fragment", fragment);
     shader.setUniform1f("dnoise", 0.0);
     shader.setUniform1f("qnoise", 4.0);
     shader.setUniform1f("r_color", red);
     shader.setUniform1f("g_color", green);
     shader.setUniform1f("b_color", blue);
     shader.setUniform1i("speed", speed);
-    // sphere.draw();
     ofScale(2, 2, 2);
     mesh.draw();
 
@@ -172,6 +171,8 @@ bool ofApp::imGui()
                 ofxImGui::AddParameter(this->speed);
                 ofxImGui::AddParameter(this->decay);
                 ofxImGui::AddParameter(this->waves);
+                 ofxImGui::AddParameter(this->perlins);
+                ImGui::Checkbox("Fragment",&fragment);
                 ImGui::Separator();
 
                 ofxImGui::EndTree(mainSettings);

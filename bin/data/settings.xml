@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Params>
-	<zoom>18.333</zoom>
+	<zoom>7.727</zoom>
 	<speed>0.1</speed>
 	<Perlin />
 	<decay>0.35</decay>

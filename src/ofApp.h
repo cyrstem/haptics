@@ -42,6 +42,8 @@ private:
 
 	ofParameterGroup shaderOps{"Shader-> CTR"};
 	ofParameter<float> speed{"speed", 0.1, 0.001, 1};
+	ofParameter<float> perlins{"perlins", 1, 0.001, 1};
+	bool fragment = false;
 
 	ofParameterGroup perlin{"Perlin"};
 	ofParameter<float> decay{"decay", 0.35, 0, 1.0};
@@ -57,6 +59,5 @@ private:
 	string XML_path = "settings.xml";
 	void XML_load_app(ofParameterGroup &g, string path);
 	void XML_save_app(ofParameterGroup &g, string path);
-
 	// end save data
 };
