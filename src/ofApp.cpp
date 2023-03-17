@@ -3,19 +3,24 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    ofDisableArbTex();
-    ofSetBackgroundColor(25);
     ofSetWindowTitle("--HAPTICS--");
     ofSetFrameRate(60.0f);
-    cam.setNearClip(10);
-    cam.setPosition(0, 45, 100);
+    ofSetLogLevel(OF_LOG_VERBOSE);
+    ofDisableArbTex();
+    ofSetBackgroundColor(11);
 
-    cubeMap.load("loc00184-22-8k.exr", 512, true);
+    // cam.setNearClip(10);
+    // cam.setPosition(0, 45, 100);
 
-    // thing
-    sphere.set(40, 24);
-    cam.lookAt(sphere.getPosition());
+    // cubeMap.load("loc00184-22-8k.exr", 512, true);
+
+    // Thing---------------------------------
+    // sphere.set(40, 24);
+    // cam.lookAt(mesh.getPosition());
+
+    mesh.setMode(OF_PRIMITIVE_LINES);
+    ico.set(1, 6);
+    mesh = ico.getMesh();
 
     this->gui.setup();
     // gui.setTheme(new MyTheme());
@@ -23,11 +28,6 @@ void ofApp::setup()
 
     // shader
     shader.load("shader");
-    shader2.load("s");
-   // main.load("main");
-    
-    mat.setCustomUniform1f("iElapsedTime", 1.0);
-    mat.setPBR(true);
 
     ofFboSettings p;
     p.width = 256;
@@ -37,7 +37,7 @@ void ofApp::setup()
     p.minFilter = GL_LINEAR;
     p.numSamples = 3;
     p.useDepth = true;
-    // p.useStencil = true;
+
     p.wrapModeHorizontal = GL_CLAMP_TO_EDGE;
     p.wrapModeVertical = GL_CLAMP_TO_EDGE;
 
@@ -47,21 +47,22 @@ void ofApp::setup()
     fbo.end();
 
     // save
-    param.add(xFreq);
-    param.add(yFreq);
-    param.add(zFreq);
-    param.add(xDepth);
-    param.add(yDepth);
-    param.add(zDepth);
-    param.add(reflect);
-    param.add(roughtness);
-    param.add(metallic);
+    param.add(zoom);
+    param.add(speed);
+    param.add(perlin);
+    param.add(decay);
+    param.add(waves);
+    param.add(eqcolor);
+    param.add(red);
+    param.add(green);
+    param.add(blue);
     XML_load_app(param, XML_path);
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    cam.setPosition(0, 0, zoom);
     fbo.begin();
     ofClear(255, 255, 255, 0);
     fbo.end();
@@ -70,37 +71,27 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    // cubeMap.drawPrefilteredCube(0.00f);
-    // cubeMap.drawIrradiance();
-    fbo.begin();
-    shader2.begin();
-    shader2.setUniform1f("u_time",ofGetElapsedTimef());
-    shader2.setUniform2f("u_resolution", 400,400);
-    ofDrawRectangle(0, 0, 400, 400);
-    shader2.end();
-    fbo.end();
-    fbo.draw(0, 0);
 
     ofEnableDepthTest();
     cam.begin();
     shader.begin();
+    shader.setUniform1f("perlins", perlins);
     shader.setUniform1f("time", ofGetElapsedTimef());
-    shader.setUniform3f("freq", xFreq, yFreq, zFreq);
-    shader.setUniformTexture("fboTex", fbo.getTexture(0), 0);
-    shader.setUniform3f("depth", xDepth, yDepth, zDepth);
-   // mat.setCustomUniform1f("iElapsedTime", ofGetElapsedTimef());
+    shader.setUniform1f("pointscale", 10.0);
+    shader.setUniform1f("decay", decay);
+    shader.setUniform1f("complex", 0.0);
+    shader.setUniform1f("waves", waves);
+    shader.setUniform1f("eqcolor", eqcolor);
+    shader.setUniform1i("fragment", fragment);
+    shader.setUniform1f("dnoise", 0.0);
+    shader.setUniform1f("qnoise", 4.0);
+    shader.setUniform1f("r_color", red);
+    shader.setUniform1f("g_color", green);
+    shader.setUniform1f("b_color", blue);
+    shader.setUniform1i("speed", speed);
+    ofScale(2, 2, 2);
+    mesh.draw();
 
-    // mat.begin();
-    // mat.setRoughness(roughtness);
-    // mat.setReflectance(reflect);
-    // mat.setMetallic(metallic);
-    // mat.setDiffuseColor(ofFloatColor(1., 1.0, 1.0, 1.0));
-    // mat.setDiffuseColor(ofFloatColor(0.0, 6.0));
- 
-
-    sphere.draw();
-
-   // mat.end();
     shader.end();
     cam.end();
     ofDisableDepthTest();
@@ -110,14 +101,15 @@ void ofApp::draw()
     {
         this->mouseOverGui = this->imGui();
     }
-    if (this->mouseOverGui)
-    {
-        this->cam.disableMouseInput();
-    }
-    else
-    {
-        this->cam.enableMouseInput();
-    }
+    // not neededd on OFCAM
+    //  if (this->mouseOverGui)
+    //  {
+    //      this->cam.disableMouseInput();
+    //  }
+    //  else
+    //  {
+    //      this->cam.enableMouseInput();
+    //  }
 }
 
 //--------------------------------------------------------------
@@ -134,7 +126,11 @@ void ofApp::keyPressed(int key)
         ofToggleFullscreen();
         break;
     case 's':
-        XML_save_app(param,XML_path);
+        XML_save_app(param, XML_path);
+        break;
+    case 'l':
+        XML_load_app(param, XML_path);
+        break;
     }
 }
 
@@ -169,33 +165,28 @@ bool ofApp::imGui()
         {
             if (ofxImGui::BeginTree(this->cameraOps, mainSettings))
             {
-                // ofxImGui::AddParameter(this->radius);
-                // ofxImGui::AddParameter(this->distance);
-                // ofxImGui::AddParameter(this->fullLenghtOrbit);
+                ofxImGui::AddParameter(this->zoom);
                 ofxImGui::EndTree(mainSettings);
             }
             ImGui::Separator();
             if (ofxImGui::BeginTree(this->shaderOps, mainSettings))
             {
-                ofxImGui::AddParameter(this->xFreq);
-                ofxImGui::AddParameter(this->yFreq);
-                ofxImGui::AddParameter(this->zFreq);
-
+                ofxImGui::AddParameter(this->speed);
+                ofxImGui::AddParameter(this->decay);
+                ofxImGui::AddParameter(this->waves);
+                ofxImGui::AddParameter(this->perlins);
+                ImGui::Checkbox("Fragment", &fragment);
                 ImGui::Separator();
-                ofxImGui::AddParameter(this->xDepth);
-                ofxImGui::AddParameter(this->yDepth);
-                ofxImGui::AddParameter(this->zDepth);
-                ImGui::Separator();
-                ofxImGui::AddParameter(this->reflect);
-                ofxImGui::AddParameter(this->roughtness);
-                ofxImGui::AddParameter(this->metallic);
 
                 ofxImGui::EndTree(mainSettings);
             }
             ImGui::Separator();
             if (ofxImGui::BeginTree(this->colors, mainSettings))
             {
-                ImGui::ColorEdit4("Diffuse", (float *)&diff_val);
+                ofxImGui::AddParameter(this->eqcolor);
+                ofxImGui::AddParameter(this->red);
+                ofxImGui::AddParameter(this->green);
+                ofxImGui::AddParameter(this->blue);
 
                 ofxImGui::EndTree(mainSettings);
             }
@@ -220,9 +211,4 @@ void ofApp::XML_save_app(ofParameterGroup &g, string path)
     ofXml settings;
     ofSerialize(settings, g);
     settings.save(path);
-}
-
-void ofApp::save()
-{
-    // SETTINGS SAVE
 }

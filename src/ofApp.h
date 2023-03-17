@@ -11,7 +11,7 @@ public:
 	void setup();
 	void update();
 	void draw();
-	
+
 	void keyPressed(int key);
 	void mouseMoved(int x, int y);
 	void windowResized(int w, int h);
@@ -19,17 +19,16 @@ public:
 	void gotMessage(ofMessage msg);
 
 	// enviroment
-	ofCubeMap cubeMap;
-	int cubeMapMode = 3;
-	ofEasyCam cam;
-	// thing
-	ofSpherePrimitive sphere;
-	ofMaterial mat;
-	//ofShader shader,shader2;
-	ofxAutoReloadedShader shader,shader2,main;
-	ofFbo fbo;
-	//FboPingPong fbo;
+	// ofCubeMap cubeMap;
+	// int cubeMapMode = 3;
 
+	glm::vec3 center = glm::vec3(0, 0, 0);
+	ofCamera cam;
+	// THING
+	ofMesh mesh;
+	ofIcoSpherePrimitive ico;
+	ofxAutoReloadedShader shader;
+	ofFbo fbo;
 
 private:
 	bool imGui();
@@ -39,28 +38,26 @@ private:
 	// params
 	ofParameterGroup param{"Params"};
 	ofParameterGroup cameraOps{"Camera-> CTR"};
+	ofParameter<float> zoom{"zoom", 10.0, 0.0, 150.0};
 
 	ofParameterGroup shaderOps{"Shader-> CTR"};
-	ofParameter<float> xFreq{"freq X", 10, 0, 128};
-	ofParameter<float> yFreq{"freq Y", 8, 0, 128};
-	ofParameter<float> zFreq{"freq Z", 7, 0, 128};
-	ofParameter<float> xDepth{"Depth X", 0.15, 0, 2.0};
-	ofParameter<float> yDepth{"Depth Y", 0.12, 0, 2.0};
-	ofParameter<float> zDepth{"Depth Z", 0.18, 0.0, 2.0};
+	ofParameter<float> speed{"speed", 0.1, 0.001, 1};
+	ofParameter<float> perlins{"perlins", 1, 0.001, 1};
+	bool fragment = false;
 
-	ofParameter<float> reflect{"Reflectance", 0.3, 0.0, 2.0};
-	ofParameter<float> roughtness{"Roghtness", 0.03, 0.0, 2.0};
-	ofParameter<float> metallic{"Metallic", 0.0, 0.0, 2.0};
+	ofParameterGroup perlin{"Perlin"};
+	ofParameter<float> decay{"decay", 0.35, 0, 1.0};
+	ofParameter<float> waves{"waves", 2, 0, 100};
 
-	ofParameterGroup colors{"ColorMaterial-> CTR"};
-	ImVec4 diff_val = ImVec4(0.07f, 0.16f, 0.11f, 1.f);
-
-
+	ofParameterGroup colors{"Colors-> CTR"};
+	ofParameter<float> eqcolor{"eqColor", 3.0, 0.0, 50.0};
+	ofParameter<float> red{"Red", 0.4, 0.0, 1.0};
+	ofParameter<float> green{"Green", 0.4, 0.0, 1.0};
+	ofParameter<float> blue{"Blue", 0.4, 0.0, 1.0};
 
 	// save data
 	string XML_path = "settings.xml";
 	void XML_load_app(ofParameterGroup &g, string path);
 	void XML_save_app(ofParameterGroup &g, string path);
-	void save();
 	// end save data
 };
